@@ -19,14 +19,16 @@ def count_matches(cardid):
             matches += 1
     return matches
 
+matches = {cid: count_matches(cid) for cid in card_info}
+
 cards = {}
 def count_cards(ids):
     n = 0
     for cardid in ids:
-        matches = count_matches(cardid)
+        m = matches[cardid]
         n += 1
-        if matches > 0:
-            n += count_cards(list(range(cardid + 1, cardid + matches + 1)))
+        if m > 0:
+            n += count_cards(list(range(cardid + 1, cardid + m + 1)))
     return n
 
 print(count_cards(card_info))
