@@ -1,13 +1,9 @@
-from math import isqrt
-
-
-def is_square(x: int):
-    return x == isqrt(x) ** 2
+from math import floor, ceil
 
 
 def n(time: int, dist: int):
     d = time * time - 4 * dist  # discriminant
-    return int((time + d**0.5) / 2) - int((time - d**0.5) / 2) - is_square(d)
+    return ceil((time + d**0.5) / 2) - floor((time - d**0.5) / 2) - 1
 
 
 if __name__ == "__main__":
