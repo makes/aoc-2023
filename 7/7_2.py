@@ -16,16 +16,6 @@ class Card:
 
 
 class Hand:
-    types = {
-        (1, 1, 1, 1, 1): 0,  # High card
-        (1, 1, 1, 2): 1,  # One pair
-        (1, 2, 2): 2,  # Two pair
-        (1, 1, 3): 3,  # Three of a kind
-        (2, 3): 4,  # Full house
-        (1, 4): 5,  # Four of a kind
-        (5,): 6,  # Five of a kind
-    }
-
     def __init__(self, symbols, bid):
         if not len(symbols) == 5:
             raise ValueError("Hand must contain five cards")
@@ -34,15 +24,14 @@ class Hand:
         card_counts = Counter(list(symbols))
         n_jokers = card_counts.get('J', 0)
         del card_counts['J']
-        type_id = sorted(card_counts.values()) if card_counts else [0]
-        type_id[-1] += n_jokers
-        self._type_id = tuple(type_id)
-        self._value = Hand.types[self._type_id]
+        strength = sorted(card_counts.values(), reverse=True) if card_counts else [0]
+        strength[0] += n_jokers
+        self._strength = tuple(strength)
 
     def __lt__(self, other):
-        if self._value < other._value:
+        if self._strength < other._strength:
             return True
-        if self._value == other._value:
+        if self._strength == other._strength:
             for c in zip(self._cards, other._cards):
                 if c[0] < c[1]:
                     return True
