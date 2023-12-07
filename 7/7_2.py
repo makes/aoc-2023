@@ -32,9 +32,9 @@ class Hand:
         self.bid = bid
         self._cards = [Card(s) for s in symbols]
         card_counts = Counter(list(symbols))
-        n_jokers = 0 if "J" not in card_counts else card_counts["J"]
-        no_jokers = dict(filter(lambda x: x[0] != "J", card_counts.items()))
-        type_id = sorted(no_jokers.values()) if no_jokers else [0]
+        n_jokers = card_counts.get('J', 0)
+        del card_counts['J']
+        type_id = sorted(card_counts.values()) if card_counts else [0]
         type_id[-1] += n_jokers
         self._type_id = tuple(type_id)
         self._value = Hand.types[self._type_id]
